@@ -13,7 +13,7 @@ module Sprockets
 
       def stylesheet_link_tag_with_enforced_precompile(*sources)
         sources_without_options(sources).each do |source|
-          ensure_asset_will_be_precompiled!(source, 'js') if enforce_precompile?
+          ensure_asset_will_be_precompiled!(source, 'css') if enforce_precompile?
         end
         stylesheet_link_tag_without_enforced_precompile(*sources)
       end
