@@ -26,6 +26,7 @@ You will need to move your `config.assets.precompile += ...` setting into `confi
 
 You also need to add the following line to `config/environments/development.rb`:
 
+    # Forces included assets to be added to config.assets.precompile
     config.assets.enforce_precompile = true
 
 
@@ -34,18 +35,18 @@ You will need to restart your Rails server whenever you make any changes to `con
 
 ## Advanced Usage
 
-To avoid restarting your server when you change `config.assets.precompile`, create a new file at: `config/assets_precompile.rb`, containing:
-
-    unless defined?(OriginalAssetsPrecompile)
-      OriginalAssetsPrecompile = Rails.application.config.assets.precompile.dup
-    end
-    Rails.application.config.assets.precompile = OriginalAssetsPrecompile + %w( extra_assets.js )
-
-Add the following lines to `config/application.rb`:
+To avoid restarting your server when you change `config.assets.precompile`, add the following lines to `config/application.rb`:
 
     # Reload config/assets_precompile when changed
+    config.assets.original_precompile = config.assets.precompile.dup
     config.to_prepare { load 'config/assets_precompile.rb' }
     config.watchable_files << 'config/assets_precompile.rb'
+
+Then move your `config.assets.precompile` settings to a new file at `config/assets_precompile.rb`:
+    
+    # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
+    assets = Rails.application.config.assets
+    assets.precompile = assets.original_precompile + %w( extra_assets.js )
 
 Now you will be able to make changes to `config/assets_precompile.rb` without needing to restart your server.
 
