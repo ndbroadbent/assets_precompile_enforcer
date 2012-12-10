@@ -1,0 +1,59 @@
+# Assets Precompile Enforcer
+
+This gem ensures that developers won't forget to add assets to `config.assets.precompile` while they are developing.
+An exception will be raised if you include an asset via `javascript_include_tag` or `stylesheet_link_tag`, 
+and it doesn't match a filter in `config.assets.precompile`.
+
+## Installation
+
+Add this line to your application's Gemfile, in the `development` group:
+
+    group :development do
+      gem 'assets_precompile_enforcer'
+    end
+
+And then execute:
+
+    $ bundle
+
+Or install it yourself as:
+
+    $ gem install assets_precompile_enforcer
+
+## Usage
+
+You will need to move your `config.assets.precompile += ...` setting into `config/application.rb`, instead of `config/environments/production.rb`. (This setting needs to be shared across development and production.)
+
+You also need to add the following line to `config/environments/development.rb`:
+
+    config.assets.enforce_precompile = true
+
+
+You will need to restart your Rails server whenever you make any changes to `config.assets.precompile`.
+
+
+## Advanced Usage
+
+To avoid restarting your server when you change `config.assets.precompile`, create a new file at: `config/assets_precompile.rb`, containing:
+
+    unless defined?(OriginalAssetsPrecompile)
+      OriginalAssetsPrecompile = Rails.application.config.assets.precompile.dup
+    end
+    Rails.application.config.assets.precompile = OriginalAssetsPrecompile + %w( extra_assets.js )
+
+Add the following lines to `config/application.rb`:
+
+    # Reload config/assets_precompile when changed
+    config.to_prepare { load 'config/assets_precompile.rb' }
+    config.watchable_files << 'config/assets_precompile.rb'
+
+Now you will be able to make changes to `config/assets_precompile.rb` without needing to restart your server.
+
+
+## Contributing
+
+1. Fork it
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create new Pull Request
