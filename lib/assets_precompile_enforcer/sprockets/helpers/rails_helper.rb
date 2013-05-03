@@ -30,10 +30,16 @@ module Sprockets
         Rails.application.config.assets.enforce_precompile
       end
 
+      def asset_list
+        ignored = Rails.application.config.assets.ignore_for_precompile || []
+        precompile = Rails.application.config.assets.precompile || []
+        precompile + ignored
+      end
+
       def ensure_asset_will_be_precompiled!(source, ext)
         return if asset_paths.is_uri?(source)
         asset_file = asset_environment.resolve(asset_paths.rewrite_extension(source, nil, ext))
-        unless asset_environment.send(:logical_path_for_filename, asset_file, Rails.application.config.assets.precompile)
+        unless asset_environment.send(:logical_path_for_filename, asset_file, asset_list)
           raise AssetPaths::AssetNotPrecompiledError.new("#{asset_file} must be added to config.assets.precompile, " <<
                                                          "otherwise it won't be precompiled for production!")
         end
