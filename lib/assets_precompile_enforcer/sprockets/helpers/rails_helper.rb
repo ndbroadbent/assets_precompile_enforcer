@@ -37,6 +37,7 @@ module Sprockets
       end
 
       def ensure_asset_will_be_precompiled!(source, ext)
+        source = source.to_s
         return if asset_paths.is_uri?(source)
         asset_file = asset_environment.resolve(asset_paths.rewrite_extension(source, nil, ext))
         unless asset_environment.send(:logical_path_for_filename, asset_file, asset_list)
