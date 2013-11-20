@@ -39,6 +39,11 @@ Whenever you call `javascript_include_tag` or `stylesheet_link_tag` for an asset
 
     <asset file> must be added to config.assets.precompile, otherwise it won't be precompiled for production!
 
+## Ignored assets
+
+If you have any assets that you don't want to precompile for production, then you can ignore them:
+
+   config.assets.ignore_for_precompile = ['development_helpers.js']
 
 ## Advanced Usage
 
