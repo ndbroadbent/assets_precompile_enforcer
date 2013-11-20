@@ -43,8 +43,8 @@ Whenever you call `javascript_include_tag` or `stylesheet_link_tag` for an asset
 
 If you have any assets that you don't want to precompile for production, then you can ignore them:
 
-   config.assets.ignore_for_precompile = ['development_helpers.js']
-
+    config.assets.ignore_for_precompile = ['development_helpers.js']
+  
 ## Advanced Usage
 
 To avoid restarting your server when you change `config.assets.precompile`, add the following lines to `config/application.rb`:
