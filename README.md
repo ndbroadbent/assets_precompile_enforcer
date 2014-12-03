@@ -29,6 +29,11 @@ You also need to add the following line to `config/environments/development.rb`:
     # Forces included assets to be added to config.assets.precompile
     config.assets.enforce_precompile = true
 
+You can also specify a predicate to be tested when the check is about to be enforced:
+
+    # Forces included assets to be added to config.assets.precompile
+    config.assets.enforce_precompile = ->{ !Konacha || Konacha.config.blank? }
+
 
 You will need to restart your Rails server whenever you make any changes to `config.assets.precompile`.
 

@@ -27,7 +27,13 @@ module Sprockets
       end
 
       def enforce_precompile?
-        Rails.application.config.assets.enforce_precompile
+        enforce_precompile = Rails.application.config.assets.enforce_precompile
+
+        if enforce_precompile.is_a? Proc
+          enforce_precompile.call
+        else
+          enforce_precompile
+        end
       end
 
       def asset_list
